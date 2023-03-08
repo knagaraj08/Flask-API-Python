@@ -74,7 +74,7 @@ def editOne(name):
     for i, q in enumerate(Shopping_list):
         if q['item_name'] == name:
             Shopping_list[i] = new_item
-    qs = request.get_json()
+
     return jsonify({'List': Shopping_list})
 
 
