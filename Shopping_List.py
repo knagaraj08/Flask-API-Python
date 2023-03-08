@@ -40,16 +40,50 @@ Shopping_list = [
     }
 ]
 
-
-@app.route('/Shopping_list')
+# http://127.0.0.1:5000/Shopping_list
+@app.route('/Shopping_list', methods=['GET'])
 def get_shopping_list():
     return jsonify(Shopping_list)
 
 
+
+# this method return a particular item
+# http://127.0.0.1:5000/Shopping_list/Egg
+@app.route('/Shopping_list/<string:item>', methods=['GET'])
+def return_one_item(item):
+    q = Shopping_list[0]
+    for i, j in enumerate(Shopping_list):
+        if j['item_name'] == item:
+            q = Shopping_list[i]
+    return jsonify(q)
+
+
+# http://127.0.0.1:5000/Shopping_list
 @app.route('/Shopping_list', methods=['POST'])
 def add_shopping_list():
     Shopping_list.append(request.get_json())
     return 'Item Added'
+
+
+# http://127.0.0.1:5000/Shopping_list/update/Egg
+# Edits/Updates information in the Database or else adds it if not present already.
+@app.route('/Shopping_list/update/<string:item>', methods=['PUT'])
+def update_item(item):
+    new_data = request.get_json()
+    for i, q in enumerate(Shopping_list):
+        if q['item_name'] == item:
+            q[i] = new_data
+        qs = request.get_json()
+        return jsonify(new_data)
+
+
+# http://127.0.0.1:5000/Shopping_list/delete/Egg
+@app.route('/Shopping_list/delete/<string:item>', methods=['DELETE'])
+def delete_item(item):
+    for i, q in enumerate(Shopping_list):
+        if q['item_name'] == item:
+            del Shopping_list[i]
+    return "its Deleted"
 
 
 if __name__ == "__main__":
